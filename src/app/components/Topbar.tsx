@@ -9,7 +9,7 @@ export default function Topbar() {
   return (
     <div className="flex flex-row items-center justify-between p-4 bg-base-100 relative border-b border-base-content/15">
       <div className="flex flex-row gap-4 items-center ">
-        <label htmlFor="mobile-drawer" className="drawer-button">
+        <label htmlFor="mobile-drawer" className="drawer-button lg:hidden ">
           <Menu />
         </label>
 

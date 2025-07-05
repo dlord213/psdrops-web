@@ -105,6 +105,19 @@ const GenreSection = ({ game }: { game: { genre: string[] } }) => {
   );
 };
 
+const PlatformsSection = ({ game }: { game: { platforms: string[] } }) => {
+  return (
+    <div className="flex flex-col gap-1">
+      <p className="text-base-content/40">Genres</p>
+      <div className="flex flex-row gap-2 items-center flex-wrap">
+        {game.platforms.map((platform) => (
+          <p className="px-6 py-1 bg-base-100 rounded-3xl">{platform}</p>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export async function generateMetadata(
   {
     params,
@@ -179,6 +192,7 @@ export default async function Page({
           <DeveloperSection game={data.game} />
           <PublisherSection game={data.game} />
           <GenreSection game={data.game} />
+          <PlatformsSection game={data.game} />
         </div>
 
         {data.game.Platforms && data.game.Platforms > 0 && (
@@ -190,7 +204,30 @@ export default async function Page({
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-4 xl:overflow-y-scroll">
+      <div className="flex flex-col gap-4 xl:overflow-y-auto">
+        <div className="flex flex-col gap-2">
+          <h1 className="font-bold tracking-widest text-base-content/40">
+            SALES / OFFERS
+          </h1>
+          <div className="flex flex-row gap-2 flex-wrap items-center">
+            {data.game.offers
+              .filter(
+                (offer) =>
+                  offer.store === "playstation" || offer.store === "eshop" || offer.store === "steam"
+              )
+              .map((offer) => (
+                <Link
+                  href={offer.url}
+                  target="_blank"
+                  className="flex flex-row p-4 items-center gap-4 bg-base-100 rounded-xl"
+                  key={offer.url}
+                >
+                  <p className="capitalize font-bold">{offer.store}</p>
+                  <p className="capitalize font-bold">{offer.price}</p>
+                </Link>
+              ))}
+          </div>
+        </div>
         <div className="flex flex-col gap-2">
           <h1 className="font-bold tracking-widest text-base-content/40">
             DESCRIPTION
@@ -245,34 +282,67 @@ export default async function Page({
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="collapse collapse-arrow bg-base-100 border-base-300 border">
-            <input type="checkbox" />
-            <div className="collapse-title font-semibold">
-              <h1 className="font-bold tracking-widest text-base-content/40">
-                DLCS
-              </h1>
-            </div>
-            <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
-              {data.game.dlcs.map((game) => (
-                <Link
-                  href={`/game/${game.href}`}
-                  className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
-                  key={game.href}
-                >
-                  <img
-                    className="aspect-square object-cover w-full rounded-3xl"
-                    src={game.image}
-                  />
-                  <p>{game.title}</p>
-                  {game.price != "Unavailable" && (
-                    <p className="font-bold">{game.price}</p>
-                  )}
-                </Link>
-              ))}
+        {data.game.dlcs && data.game.dlcs.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <div className="collapse collapse-arrow bg-base-100 border-base-300 border">
+              <input type="checkbox" />
+              <div className="collapse-title font-semibold">
+                <h1 className="font-bold tracking-widest text-base-content/40">
+                  DLCS
+                </h1>
+              </div>
+              <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
+                {data.game.dlcs.map((game) => (
+                  <Link
+                    href={`/game/${game.href}`}
+                    className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
+                    key={game.href}
+                  >
+                    <img
+                      className="aspect-square object-cover w-full rounded-3xl"
+                      src={game.image}
+                    />
+                    <p>{game.title}</p>
+                    {game.price != "Unavailable" && (
+                      <p className="font-bold">{game.price}</p>
+                    )}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
+        {data.game.included && data.game.included.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <div className="collapse collapse-arrow bg-base-100 border-base-300 border">
+              <input type="checkbox" />
+              <div className="collapse-title font-semibold">
+                <h1 className="font-bold tracking-widest text-base-content/40">
+                  INCLUDED IN
+                </h1>
+              </div>
+              <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
+                {data.game.included.map((game) => (
+                  <Link
+                    href={`/game/${game.href}`}
+                    className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
+                    key={game.href}
+                  >
+                    <img
+                      className="aspect-square object-cover w-full rounded-3xl"
+                      src={game.image}
+                    />
+                    <p>{game.title}</p>
+                    {game.price != "Unavailable" && (
+                      <p className="font-bold">{game.price}</p>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-2">
           <div className="collapse collapse-arrow bg-base-100 border-base-300 border">
             <input type="checkbox" />
