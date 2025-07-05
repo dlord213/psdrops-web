@@ -2,12 +2,10 @@
 import Link from "next/link";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, LoaderPinwheel } from "lucide-react";
 
 export default function Page() {
-  const params = useSearchParams();
   const [page, setPage] = useState(1);
 
   const { data: trendingDeals } = useQuery({
@@ -38,7 +36,7 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-6 p-8 overflow-y-scroll xl:max-h-[90vh]">
       <div className="flex flex-row items-center justify-between">
-        <h1 className="font-bold text-4xl">Hottest Deals</h1>
+        <h1 className="font-bold text-4xl">Trending Deals</h1>
         <div className="flex flex-row items-center gap-2">
           <button className="btn px-8">
             <ArrowLeft />
@@ -52,30 +50,41 @@ export default function Page() {
         <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
           {trendingDeals &&
             trendingDeals.games.length > 0 &&
-            trendingDeals.games.map((game) => (
-              <Link
-                href={`/game/${game.link}`}
-                key={game.link}
-                className="flex flex-col rounded-xl bg-base-100 rounded-tr-2xl rounded-tl-2xl h-full"
-              >
-                <img src={game.imgSrc} className="w-full h-full object-cover" />
-                <div className="p-4">
-                  <h1 className="text-lg font-bold">{game.productTitle}</h1>
-                  {!game.price ? (
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="font-bold">{game.originalPrice}</h1>
-                    </div>
-                  ) : (
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="font-bold">{game.price}</h1>
-                      <p className="line-through text-base-content/50">
-                        {game.originalPrice}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
+            trendingDeals.games.map(
+              (game: {
+                link: string;
+                imgSrc: string;
+                productTitle: string;
+                price: string;
+                originalPrice: string;
+              }) => (
+                <Link
+                  href={`/game/${game.link}`}
+                  key={game.link}
+                  className="flex flex-col rounded-xl bg-base-100 rounded-tr-2xl rounded-tl-2xl h-full"
+                >
+                  <img
+                    src={game.imgSrc}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="p-4">
+                    <h1 className="text-lg font-bold">{game.productTitle}</h1>
+                    {!game.price ? (
+                      <div className="flex flex-row items-center gap-2">
+                        <h1 className="font-bold">{game.originalPrice}</h1>
+                      </div>
+                    ) : (
+                      <div className="flex flex-row items-center gap-2">
+                        <h1 className="font-bold">{game.price}</h1>
+                        <p className="line-through text-base-content/50">
+                          {game.originalPrice}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              )
+            )}
         </div>
       )}
       <div className="flex flex-row items-center gap-2 self-end">

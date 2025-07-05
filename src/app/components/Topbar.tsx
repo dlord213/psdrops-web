@@ -1,6 +1,6 @@
 "use client";
 
-import { Globe, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState } from "react";
 
 export default function Topbar() {
@@ -40,9 +40,7 @@ export default function Topbar() {
         </label>
       </div>
 
-      <div className="hidden md:flex flex-row items-center gap-2">
-        <Globe />
-      </div>
+      <div className="hidden md:flex flex-row items-center gap-2"></div>
     </div>
   );
 }

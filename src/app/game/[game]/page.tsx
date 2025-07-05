@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Link from "next/link";
 
-import { Building, ShoppingBag, User } from "lucide-react";
+import { User } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 
 const DeveloperSection = ({
@@ -212,10 +212,12 @@ export default async function Page({
           <div className="flex flex-row gap-2 flex-wrap items-center">
             {data.game.offers
               .filter(
-                (offer) =>
-                  offer.store === "playstation" || offer.store === "eshop" || offer.store === "steam"
+                (offer: { store: string }) =>
+                  offer.store === "playstation" ||
+                  offer.store === "eshop" ||
+                  offer.store === "steam"
               )
-              .map((offer) => (
+              .map((offer: { url: string; store: string; price: string }) => (
                 <Link
                   href={offer.url}
                   target="_blank"
@@ -249,7 +251,7 @@ export default async function Page({
             </div>
             <div className="collapse-content flex flex-col gap-4">
               <div className="carousel w-full">
-                {data.game.images.map((image, index) => {
+                {data.game.images.map((image: string, index: number) => {
                   const totalSlides = data.game.images.length;
                   const prevIndex = (index - 1 + totalSlides) % totalSlides;
                   const nextIndex = (index + 1) % totalSlides;
@@ -292,22 +294,29 @@ export default async function Page({
                 </h1>
               </div>
               <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
-                {data.game.dlcs.map((game) => (
-                  <Link
-                    href={`/game/${game.href}`}
-                    className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
-                    key={game.href}
-                  >
-                    <img
-                      className="aspect-square object-cover w-full rounded-3xl"
-                      src={game.image}
-                    />
-                    <p>{game.title}</p>
-                    {game.price != "Unavailable" && (
-                      <p className="font-bold">{game.price}</p>
-                    )}
-                  </Link>
-                ))}
+                {data.game.dlcs.map(
+                  (game: {
+                    href: string;
+                    image: string;
+                    title: string;
+                    price: string;
+                  }) => (
+                    <Link
+                      href={`/game/${game.href}`}
+                      className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
+                      key={game.href}
+                    >
+                      <img
+                        className="aspect-square object-cover w-full rounded-3xl"
+                        src={game.image}
+                      />
+                      <p>{game.title}</p>
+                      {game.price != "Unavailable" && (
+                        <p className="font-bold">{game.price}</p>
+                      )}
+                    </Link>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -322,22 +331,29 @@ export default async function Page({
                 </h1>
               </div>
               <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
-                {data.game.included.map((game) => (
-                  <Link
-                    href={`/game/${game.href}`}
-                    className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
-                    key={game.href}
-                  >
-                    <img
-                      className="aspect-square object-cover w-full rounded-3xl"
-                      src={game.image}
-                    />
-                    <p>{game.title}</p>
-                    {game.price != "Unavailable" && (
-                      <p className="font-bold">{game.price}</p>
-                    )}
-                  </Link>
-                ))}
+                {data.game.included.map(
+                  (game: {
+                    href: string;
+                    image: string;
+                    title: string;
+                    price: string;
+                  }) => (
+                    <Link
+                      href={`/game/${game.href}`}
+                      className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
+                      key={game.href}
+                    >
+                      <img
+                        className="aspect-square object-cover w-full rounded-3xl"
+                        src={game.image}
+                      />
+                      <p>{game.title}</p>
+                      {game.price != "Unavailable" && (
+                        <p className="font-bold">{game.price}</p>
+                      )}
+                    </Link>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -352,19 +368,26 @@ export default async function Page({
               </h1>
             </div>
             <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
-              {data.game.recommendations.map((game) => (
-                <Link
-                  href={`/game/${game.href}`}
-                  className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
-                  key={game.href}
-                >
-                  <img
-                    className="aspect-square object-cover w-full rounded-3xl"
-                    src={game.image}
-                  />
-                  <p>{game.title}</p>
-                </Link>
-              ))}
+              {data.game.recommendations.map(
+                (game: {
+                  href: string;
+                  image: string;
+                  title: string;
+                  price: string;
+                }) => (
+                  <Link
+                    href={`/game/${game.href}`}
+                    className="flex flex-col gap-2 transition-all delay-0 duration-300 hover:scale-105"
+                    key={game.href}
+                  >
+                    <img
+                      className="aspect-square object-cover w-full rounded-3xl"
+                      src={game.image}
+                    />
+                    <p>{game.title}</p>
+                  </Link>
+                )
+              )}
             </div>
           </div>
         </div>

@@ -25,7 +25,7 @@ interface RelatedItem {
 
 interface Recommendation {
     title: string;
-    url: string;
+    href: string;
     image: string;
     originalPrice: string | null;
     salePrice: string | null;

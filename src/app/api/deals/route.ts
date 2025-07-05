@@ -1,4 +1,4 @@
-import _SCRAPING_INSTANCE, { initializeSession } from "@/app/utils/axios";
+import _SCRAPING_INSTANCE from "@/app/utils/axios";
 import * as cheerio from "cheerio";
 
 import type { NextRequest } from "next/server";

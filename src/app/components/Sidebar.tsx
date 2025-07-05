@@ -4,7 +4,6 @@ import Link from "next/link";
 import { HomeIcon, DollarSign, TrendingUp } from "lucide-react";
 import { genres } from "../types/Genres";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Sidebar() {
   const pathname = usePathname();

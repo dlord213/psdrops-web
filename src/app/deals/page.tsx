@@ -57,24 +57,35 @@ export default function Page() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
           {deals &&
             deals.games.length > 0 &&
-            deals.games.map((game) => (
-              <Link
-                href={`/game/${game.link}`}
-                key={game.link}
-                className="flex flex-col rounded-xl bg-base-100 rounded-tr-2xl rounded-tl-2xl h-full"
-              >
-                <img src={game.imgSrc} className="w-full h-full object-cover" />
-                <div className="p-4">
-                  <h1 className="text-lg font-bold">{game.productTitle}</h1>
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="font-bold">{game.price}</h1>
-                    <p className="line-through text-base-content/50">
-                      {game.originalPrice}
-                    </p>
+            deals.games.map(
+              (game: {
+                link: string;
+                imgSrc: string;
+                productTitle: string;
+                price: string;
+                originalPrice: string;
+              }) => (
+                <Link
+                  href={`/game/${game.link}`}
+                  key={game.link}
+                  className="flex flex-col rounded-xl bg-base-100 rounded-tr-2xl rounded-tl-2xl h-full"
+                >
+                  <img
+                    src={game.imgSrc}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="p-4">
+                    <h1 className="text-lg font-bold">{game.productTitle}</h1>
+                    <div className="flex flex-row items-center gap-2">
+                      <h1 className="font-bold">{game.price}</h1>
+                      <p className="line-through text-base-content/50">
+                        {game.originalPrice}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              )
+            )}
         </div>
       )}
       <div className="flex flex-row items-center gap-2 md:self-end">
