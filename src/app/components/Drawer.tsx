@@ -1,0 +1,81 @@
+"use client";
+import Link from "next/link";
+
+import { DollarSign, HomeIcon, TrendingUp, X } from "lucide-react";
+import { genres } from "../types/Genres";
+import { usePathname, useSearchParams } from "next/navigation";
+
+export default function Drawer() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentGenre = searchParams.get("genre");
+
+  const active =
+    "flex flex-row justify-start gap-2 btn btn-ghost btn-lg btn-active";
+  const inactive = "flex flex-row justify-start gap-2 btn btn-ghost btn-lg";
+
+  return (
+    <div className="drawer lg:hidden">
+      <input id="mobile-drawer" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-side">
+        <label
+          htmlFor="mobile-drawer"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
+        <div className="flex flex-col gap-4 bg-base-100 h-full p-4 w-80">
+          <label htmlFor="mobile-drawer" className="drawer-button">
+            <X />
+          </label>
+          <Link
+            href={"/"}
+            className="flex flex-col gap-4 items-center justify-center"
+          >
+            <img src="/logo.png" className="w-full aspect-square max-w-[40%]" />
+            <h1 className="font-bold text-4xl">psDrops</h1>
+          </Link>
+          <div className="flex flex-col gap-2">
+            <p className="text-base-content/50 my-3">Menu</p>
+            <Link href={"/"} className={pathname == "/" ? active : inactive}>
+              <HomeIcon />
+              <h1>Home</h1>
+            </Link>
+            <Link
+              href={"/deals"}
+              className={pathname == "/deals" ? active : inactive}
+            >
+              <DollarSign />
+              <h1>Deals</h1>
+            </Link>
+            <Link
+              href={"/trending"}
+              className={pathname == "/trending" ? active : inactive}
+            >
+              <TrendingUp />
+              <h1>Trending</h1>
+            </Link>
+          </div>
+          <p className="text-base-content/50">Genres</p>
+          <div className="flex flex-col gap-2 overflow-y-scroll">
+            {genres.map((genre) => {
+              const isActive = pathname === "/deals" && currentGenre === genre;
+
+              return (
+                <Link
+                  key={genre}
+                  href={`/deals?genre=${genre}`}
+                  className={isActive ? active : inactive}
+                >
+                  <h1>{genre}</h1>
+                </Link>
+              );
+            })}
+          </div>
+          <p className="text-base-content/50 text-sm self-center">
+            © psDrops / mirimomekiku
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

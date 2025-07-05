@@ -15,14 +15,14 @@ export default function Sidebar() {
     "flex flex-row justify-start gap-2 btn btn-ghost btn-lg btn-active";
   const inactive = "flex flex-row justify-start gap-2 btn btn-ghost btn-lg";
 
-  useEffect(() => {
-    console.log(pathname);
-  }, [pathname]);
-
   return (
-    <div className="flex flex-col p-8 bg-base-100 gap-6 max-h-screen border-r border-base-content/15">
-      <Link href={"/"} className="font-bold text-4xl">
-        psDrops
+    <div className="hidden lg:flex flex-col p-8 bg-base-100 gap-6 max-h-screen border-r border-base-content/15 ">
+      <Link
+        href={"/"}
+        className="flex flex-col gap-4 items-center justify-center"
+      >
+        <img src="/logo.png" className="w-full aspect-square max-w-[50%]" />
+        <h1 className="font-bold text-4xl">psDrops</h1>
       </Link>
       <div className="flex flex-col gap-2">
         <p className="text-base-content/50 my-3">Menu</p>

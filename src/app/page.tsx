@@ -17,7 +17,7 @@ export default async function Home() {
   ).json();
 
   return (
-    <div className="flex flex-col gap-6 p-8 overflow-y-scroll xl:max-h-[90vh]">
+    <div className="flex flex-col gap-6 p-8 overflow-y-scroll lg:min-h-[86vh] lg:max-h-[86vh] xl:min-h-[88vh] xl:max-h-[88vh] 2xl:min-h-[90vh] 2xl:max-h-[90vh] bg-base-300">
       {/* Hottest deals */}
       <div>
         <Link
@@ -34,10 +34,10 @@ export default async function Home() {
           <ChevronRight />
         </Link>
       </div>
-      <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
         {hottestDeals &&
           hottestDeals.games.length > 0 &&
-          hottestDeals.games.splice(0, 4).map((game) => (
+          hottestDeals.games.splice(0, 6).map((game) => (
             <Link
               href={`/game/${game.link}`}
               key={game.link}
@@ -74,7 +74,7 @@ export default async function Home() {
           <ChevronRight />
         </Link>
       </div>
-      <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
         {mostWantedDeals &&
           mostWantedDeals.games.length > 0 &&
           mostWantedDeals.games.splice(0, 4).map((game) => (
@@ -114,7 +114,7 @@ export default async function Home() {
           <ChevronRight />
         </Link>
       </div>
-      <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
         {mostOwnedDeals &&
           mostOwnedDeals.games.length > 0 &&
           mostOwnedDeals.games.splice(0, 4).map((game) => (
@@ -154,7 +154,7 @@ export default async function Home() {
           <ChevronRight />
         </Link>
       </div>
-      <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
         {dlcsDeals &&
           dlcsDeals.games.length > 0 &&
           dlcsDeals.games.splice(0, 4).map((game) => (

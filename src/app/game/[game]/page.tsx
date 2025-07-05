@@ -166,16 +166,20 @@ export default async function Page({
   ).json();
 
   return (
-    <div className="2xl:grid 2xl:grid-cols-[0.4fr_1fr] gap-6 p-8 overflow-y-scroll xl:min-h-[91vh] xl:max-h-[91vh] max-w-7xl mx-auto relative">
-      <div className="flex flex-col gap-4 px-2 h-full sticky top-4 overflow-y-auto">
-        <img
-          src={data.game.image}
-          className="max-h-[30rem] rounded-3xl self-start object-contain"
-        />
-        <h1 className="font-bold text-4xl">{data.game.title}</h1>
-        <DeveloperSection game={data.game} />
-        <PublisherSection game={data.game} />
-        <GenreSection game={data.game} />
+    <div className="flex flex-col xl:grid xl:grid-cols-[0.5fr_1fr] 2xl:grid-cols-[0.4fr_1fr] gap-6 p-8 overflow-y-scroll min-h-screen bg-base-300 lg:min-h-[86vh] lg:max-h-[86vh] xl:min-h-[88vh] xl:max-h-[88vh] 2xl:min-h-[90vh] 2xl:max-h-[90vh] max-w-7xl mx-auto relative">
+      <div className="flex flex-col md:flex-row xl:flex-col gap-8 xl:gap-4 px-2 xl:h-full xl:sticky xl:top-4 xl:overflow-y-auto">
+        <div className="flex flex-col gap-4">
+          <img
+            src={data.game.image}
+            className="max-h-[30rem] rounded-3xl self-start object-contain"
+          />
+          <h1 className="font-bold text-4xl">{data.game.title}</h1>
+        </div>
+        <div className="flex flex-col gap-4">
+          <DeveloperSection game={data.game} />
+          <PublisherSection game={data.game} />
+          <GenreSection game={data.game} />
+        </div>
 
         {data.game.Platforms && data.game.Platforms > 0 && (
           <div className="flex flex-col gap-1">
@@ -186,7 +190,7 @@ export default async function Page({
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-4 overflow-y-scroll">
+      <div className="flex flex-col gap-4 xl:overflow-y-scroll">
         <div className="flex flex-col gap-2">
           <h1 className="font-bold tracking-widest text-base-content/40">
             DESCRIPTION
@@ -249,7 +253,7 @@ export default async function Page({
                 DLCS
               </h1>
             </div>
-            <div className="collapse-content grid grid-cols-4 gap-4">
+            <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
               {data.game.dlcs.map((game) => (
                 <Link
                   href={`/game/${game.href}`}
@@ -261,7 +265,9 @@ export default async function Page({
                     src={game.image}
                   />
                   <p>{game.title}</p>
-                  {game.price != 'Unavailable' && <p className="font-bold">{game.price}</p>}
+                  {game.price != "Unavailable" && (
+                    <p className="font-bold">{game.price}</p>
+                  )}
                 </Link>
               ))}
             </div>
@@ -275,7 +281,7 @@ export default async function Page({
                 RECOMMENDATIONS
               </h1>
             </div>
-            <div className="collapse-content grid grid-cols-4 gap-4">
+            <div className="collapse-content grid grid-cols-2 md:grid-cols-4 gap-4">
               {data.game.recommendations.map((game) => (
                 <Link
                   href={`/game/${game.href}`}

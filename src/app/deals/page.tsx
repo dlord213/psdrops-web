@@ -11,7 +11,7 @@ export default function Page() {
   const genre = params.get("genre");
   const [page, setPage] = useState(1);
 
-  const { data: hottestDeals } = useQuery({
+  const { data: deals } = useQuery({
     queryKey: [page, "deals", genre],
     queryFn: async () => {
       try {
@@ -32,9 +32,9 @@ export default function Page() {
     },
   });
 
-  if (!hottestDeals) {
+  if (!deals) {
     return (
-      <div className="items-center justify-center flex flex-col 2xl:min-h-[90vh]">
+      <div className="items-center justify-center flex flex-col lg:min-h-[80vh] xl:min-h-[88vh] 2xl:min-h-[90vh] min-h-screen">
         <LoaderPinwheel className="animate-spin" size={96} />
       </div>
     );
@@ -53,11 +53,11 @@ export default function Page() {
           </button>
         </div>
       </div>
-      {hottestDeals && (
-        <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
-          {hottestDeals &&
-            hottestDeals.games.length > 0 &&
-            hottestDeals.games.map((game) => (
+      {deals && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
+          {deals &&
+            deals.games.length > 0 &&
+            deals.games.map((game) => (
               <Link
                 href={`/game/${game.link}`}
                 key={game.link}
@@ -77,9 +77,9 @@ export default function Page() {
             ))}
         </div>
       )}
-      <div className="flex flex-row items-center gap-2 self-end">
+      <div className="flex flex-row items-center gap-2 md:self-end">
         <button
-          className="btn px-8"
+          className="btn flex-1 px-8"
           onClick={() => {
             if (page == 1) return;
 
@@ -89,7 +89,7 @@ export default function Page() {
           <ArrowLeft />
         </button>
         <button
-          className="btn px-8"
+          className="btn flex-1 px-8"
           onClick={() => {
             setPage((prev) => prev + 1);
           }}
