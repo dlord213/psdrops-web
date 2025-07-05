@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Link from "next/link";
 
 import { User } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 
-const DeveloperSection = ({
-  game,
-}: {
-  game: { developer: string[] | string };
-}) => {
+const DeveloperSection = ({ game }: { game: { developer: any } }) => {
   if (Array.isArray(game)) {
     return (
       <div className="flex flex-col gap-2">
@@ -17,7 +14,7 @@ const DeveloperSection = ({
           <p>Developer/s</p>
         </div>
         <div className="flex flex-row gap-2 items-center">
-          {game.developer.map((dev) => (
+          {game.developer.map((dev: { link: string; name: string }) => (
             <p
               className="px-6 py-1 bg-base-100 rounded-3xl text-sm"
               key={dev.link}
@@ -45,12 +42,8 @@ const DeveloperSection = ({
   );
 };
 
-const PublisherSection = ({
-  game,
-}: {
-  game: { publisher: string[] | string };
-}) => {
-  if (Array.isArray(game)) {
+const PublisherSection = ({ game }: { game: { publisher: any } }) => {
+  if (Array.isArray(game.publisher)) {
     return (
       <div className="flex flex-col gap-2">
         <div className="flex flex-row gap-2 items-center">
@@ -58,12 +51,12 @@ const PublisherSection = ({
           <p>Publisher/s</p>
         </div>
         <div className="flex flex-row gap-2 items-center">
-          {game.publisher.map((dev) => (
+          {game.publisher.map((pub: { link: string; name: string }) => (
             <p
               className="px-6 py-1 bg-base-100 rounded-3xl text-sm"
-              key={dev.link}
+              key={pub.link}
             >
-              {dev.name}
+              {pub.name}
             </p>
           ))}
         </div>
@@ -86,12 +79,16 @@ const PublisherSection = ({
   );
 };
 
-const GenreSection = ({ game }: { game: { genre: string[] } }) => {
+const GenreSection = ({
+  game,
+}: {
+  game: { genre: { href: string; genre: string }[] };
+}) => {
   return (
     <div className="flex flex-col gap-1">
       <p className="text-base-content/40">Genres</p>
       <div className="flex flex-row gap-2 items-center flex-wrap">
-        {game.genre.map((genre) => (
+        {game.genre.map((genre: { href: string; genre: string }) => (
           <Link
             href={genre.href}
             className="px-6 py-1 bg-base-100 rounded-3xl"
@@ -111,7 +108,9 @@ const PlatformsSection = ({ game }: { game: { platforms: string[] } }) => {
       <p className="text-base-content/40">Genres</p>
       <div className="flex flex-row gap-2 items-center flex-wrap">
         {game.platforms.map((platform) => (
-          <p className="px-6 py-1 bg-base-100 rounded-3xl">{platform}</p>
+          <p className="px-6 py-1 bg-base-100 rounded-3xl" key={platform}>
+            {platform}
+          </p>
         ))}
       </div>
     </div>
@@ -127,7 +126,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { game } = await params;
-  const res = await fetch(`http://localhost:3000/api/game/${game}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/game/${game}`
+  );
   const data = await res.json();
 
   const title = data.game.title ?? "Unknown Game";
@@ -144,15 +145,14 @@ export async function generateMetadata(
     title: `PSDrops / ${title}`,
     description,
     keywords: [title],
-    metadataBase: new URL("https://psdrops.com"),
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `Play ${title} | PSDrops`,
+      title: `${title} | PSDrops`,
       description,
       url: canonicalUrl,
-      images: images.map((url) => ({
+      images: images.map((url: any) => ({
         url,
         width: 1200,
         height: 630,
@@ -161,7 +161,7 @@ export async function generateMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title: `Play ${title} | PSDrops`,
+      title: `${title} | PSDrops`,
       description,
       images,
     },
@@ -175,7 +175,7 @@ export default async function Page({
 }) {
   const { game } = await params;
   const data = await (
-    await fetch(`http://localhost:3000/api/game/${game}`)
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/game/${game}`)
   ).json();
 
   return (

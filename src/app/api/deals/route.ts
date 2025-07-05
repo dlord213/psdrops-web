@@ -1,7 +1,8 @@
 import _SCRAPING_INSTANCE from "@/app/utils/axios";
 import * as cheerio from "cheerio";
+import { NextRequest } from "next/server";
 
-import type { NextRequest } from "next/server";
+export const dynamic = 'force-static';
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;

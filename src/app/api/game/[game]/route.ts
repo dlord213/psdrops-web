@@ -37,7 +37,7 @@ interface Recommendation {
 const extractRelatedItems = ($: any, id: string): RelatedItem[] => {
     const items: RelatedItem[] = [];
 
-    $(`#${id} .related-item`).each((_, el) => {
+    $(`#${id} .related-item`).each((_: any, el: any) => {
         const $el = $(el);
         const title = $el.find(".main-link").text().trim();
         const href =

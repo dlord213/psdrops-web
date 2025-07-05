@@ -3,10 +3,10 @@ import Link from "next/link";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { ArrowLeft, ArrowRight, LoaderPinwheel } from "lucide-react";
 
-export default function Page() {
+const Component = () => {
   const params = useSearchParams();
   const genre = params.get("genre");
   const [page, setPage] = useState(1);
@@ -17,9 +17,7 @@ export default function Page() {
       try {
         const data = await (
           await fetch(
-            `http://localhost:3000/api/deals?page=${page}${
-              genre ? `&genre=${genre}` : ""
-            }`
+            `/api/deals?page=${page}${genre ? `&genre=${genre}` : ""}`
           )
         ).json();
 
@@ -109,5 +107,13 @@ export default function Page() {
         </button>
       </div>
     </div>
+  );
+};
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Component />
+    </Suspense>
   );
 }

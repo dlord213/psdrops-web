@@ -7,6 +7,7 @@ import { Gabarito } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./utils/query_provider";
 import Drawer from "./components/Drawer";
+import { Suspense } from "react";
 
 const defaultFont = Gabarito({
   subsets: ["latin"],
@@ -26,16 +27,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <QueryProvider>
-        <body className={`${defaultFont.className} antialiased bg-base-300`}>
-          <main className="lg:grid lg:grid-cols-[0.25fr_1fr] 2xl:grid-cols-[0.15fr_1fr] max-h-screen">
-            <Drawer />
-            <Sidebar />
-            <div className="flex flex-col relative">
-              <Topbar />
-              {children}
-            </div>
-          </main>
-        </body>
+        <Suspense>
+          <body className={`${defaultFont.className} antialiased bg-base-300`}>
+            <main className="lg:grid lg:grid-cols-[0.25fr_1fr] 2xl:grid-cols-[0.15fr_1fr] max-h-screen">
+              <Drawer />
+              <Sidebar />
+              <div className="flex flex-col relative">
+                <Topbar />
+                {children}
+              </div>
+            </main>
+          </body>
+        </Suspense>
       </QueryProvider>
     </html>
   );

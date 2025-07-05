@@ -12,9 +12,7 @@ export default function Page() {
     queryKey: [page, "deals"],
     queryFn: async () => {
       try {
-        const data = await (
-          await fetch(`http://localhost:3000/api/trending?page=${page}`)
-        ).json();
+        const data = await (await fetch(`/api/trending?page=${page}`)).json();
 
         console.log(data);
 
