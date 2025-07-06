@@ -49,7 +49,7 @@ export default async function Home() {
         {hottestDeals &&
           hottestDeals.games.length > 0 &&
           hottestDeals.games
-            .splice(0, 6)
+            .splice(0, 4)
             .map(
               (game: {
                 link: string;

@@ -6,7 +6,7 @@ import { User } from "lucide-react";
 import type { Metadata, ResolvingMetadata } from "next";
 
 const DeveloperSection = ({ game }: { game: { developer: any } }) => {
-  if (Array.isArray(game)) {
+  if (Array.isArray(game.developer)) {
     return (
       <div className="flex flex-col gap-2">
         <div className="flex flex-row gap-2 items-center">

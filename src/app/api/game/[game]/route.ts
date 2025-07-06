@@ -84,7 +84,8 @@ const getDetails = async (slug: string) => {
 
       // Support for linked label text (e.g. "How Long To Beat" as a link)
       if (!label.endsWith(":")) {
-        label = $el.find("strong a").first().text().trim() + ":";
+        const linkedLabel = $el.find("strong a").first().text().trim();
+        if (linkedLabel) label = linkedLabel + ":";
       }
 
       switch (label) {
@@ -114,20 +115,6 @@ const getDetails = async (slug: string) => {
           }
           break;
 
-        case "Genre:":
-          gameDetails.genre = $el
-            .find("a")
-            .map((_, a) => {
-              const genre = $(a).text().trim();
-              const href = $(a)
-                .attr("href")
-                ?.replace("/games", "/deals")
-                .replace("filter[genre]", "genre");
-              return { genre, href };
-            })
-            .get();
-          break;
-
         case "Number of players:":
           gameDetails.players = {};
           $el.find("ul li").each((_, li) => {
@@ -143,6 +130,31 @@ const getDetails = async (slug: string) => {
               .trim();
             gameDetails.players[type] = count;
           });
+          break;
+
+        case "How Long To Beat:":
+          gameDetails.hltb = {};
+          const hltbLink = $el.find("strong a").attr("href");
+          if (hltbLink) gameDetails.hltb.url = hltbLink;
+          $el.find("ul li").each((_, li) => {
+            const mode = $(li).find("strong").text().replace(":", "").trim();
+            const time = $(li).text().replace(`${mode}:`, "").trim();
+            gameDetails.hltb[mode] = time;
+          });
+          break;
+
+        case "Genre:":
+          gameDetails.genre = $el
+            .find("a")
+            .map((_, a) => {
+              const genre = $(a).text().trim();
+              const href = $(a)
+                .attr("href")
+                ?.replace("/games", "/deals")
+                .replace("filter[genre]", "genre");
+              return { genre, href };
+            })
+            .get();
           break;
 
         case "Developer:":
@@ -169,22 +181,10 @@ const getDetails = async (slug: string) => {
           };
           break;
 
-        case "How Long To Beat:":
-          gameDetails.hltb = {};
-          const hltbLink = $el.find("strong a").attr("href");
-          if (hltbLink) {
-            gameDetails.hltb.url = hltbLink;
-          }
-          $el.find("ul li").each((_, li) => {
-            const mode = $(li).find("strong").text().replace(":", "").trim();
-            const time = $(li).text().replace(`${mode}:`, "").trim();
-            gameDetails.hltb[mode] = time;
-          });
-          break;
-
         case "ESRB Rating:":
           gameDetails.esrb = $el.text().replace(label, "").trim();
           break;
+
         case "Platforms:":
           const platformsText =
             $el.find("a").text().trim() ||
@@ -196,32 +196,36 @@ const getDetails = async (slug: string) => {
           break;
 
         default: {
-          // Remove <strong> tag to get raw value
           const keyRaw = $el
             .find("strong")
             .first()
             .text()
             .trim()
             .replace(":", "");
-
-          // Normalize key: to camelCase
           const normalizedKey = keyRaw
             .toLowerCase()
             .replace(/[^a-z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
 
-          // Remove the label and keep the value text
-          const valueText = $el
-            .clone()
-            .children("strong")
-            .remove()
-            .end()
-            .text()
-            .trim();
-
-          if (valueText) {
-            gameDetails[normalizedKey] = valueText;
+          // Check for nested <ul>
+          const nestedItems = $el.find("ul li");
+          if (nestedItems.length > 0) {
+            gameDetails[normalizedKey] = {};
+            nestedItems.each((_, li) => {
+              const $li = $(li);
+              const subKey = $li.find("strong").text().replace(":", "").trim();
+              const subValue = $li.text().replace(`${subKey}:`, "").trim();
+              if (subKey) gameDetails[normalizedKey][subKey] = subValue;
+            });
+          } else {
+            const valueText = $el
+              .clone()
+              .children("strong")
+              .remove()
+              .end()
+              .text()
+              .trim();
+            if (valueText) gameDetails[normalizedKey] = valueText;
           }
-
           break;
         }
       }
