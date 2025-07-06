@@ -2,28 +2,36 @@
 import Link from "next/link";
 
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { ArrowLeft, ArrowRight, LoaderPinwheel } from "lucide-react";
 
-export default function Page() {
+const Component = () => {
+  const params = useSearchParams();
+  const query = params.get("query");
   const [page, setPage] = useState(1);
 
-  const { data: trendingDeals } = useQuery({
-    queryKey: [page, "deals"],
+  const { data: deals } = useQuery({
+    queryKey: ["search-deals", query, page],
     queryFn: async () => {
       try {
-        const data = await (await fetch(`/api/trending?page=${page}`)).json();
+        const data = await (
+          await fetch(`/api/search?query=${query}&page=${page}`)
+        ).json();
+
 
         return data;
       } catch (err) {
         throw err;
       }
     },
+    enabled: !!query,
+    refetchOnWindowFocus: false,
   });
 
-  if (!trendingDeals) {
+  if (!deals) {
     return (
-      <div className="items-center justify-center flex flex-col 2xl:min-h-[90vh]">
+      <div className="items-center justify-center flex flex-col lg:min-h-[80vh] xl:min-h-[88vh] 2xl:min-h-[90vh] min-h-screen">
         <LoaderPinwheel className="animate-spin" size={96} />
       </div>
     );
@@ -32,13 +40,21 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-6 p-8 overflow-y-scroll xl:max-h-[90vh]">
       <div className="flex flex-row items-center justify-between">
-        <h1 className="font-bold text-4xl">Trending Deals</h1>
+        <h1 className="font-bold text-4xl">Hottest Deals</h1>
+        <div className="flex flex-row items-center gap-2">
+          <button className="btn px-8">
+            <ArrowLeft />
+          </button>
+          <button className="btn px-8">
+            <ArrowRight />
+          </button>
+        </div>
       </div>
-      {trendingDeals && (
-        <div className="grid grid-cols-4 items-center gap-4 rounded-2xl">
-          {trendingDeals &&
-            trendingDeals.games.length > 0 &&
-            trendingDeals.games.map(
+      {deals && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4 rounded-2xl">
+          {deals &&
+            deals.games.length > 0 &&
+            deals.games.map(
               (game: {
                 link: string;
                 imgSrc: string;
@@ -57,27 +73,21 @@ export default function Page() {
                   />
                   <div className="p-4">
                     <h1 className="text-lg font-bold">{game.productTitle}</h1>
-                    {!game.price ? (
-                      <div className="flex flex-row items-center gap-2">
-                        <h1 className="font-bold">{game.originalPrice}</h1>
-                      </div>
-                    ) : (
-                      <div className="flex flex-row items-center gap-2">
-                        <h1 className="font-bold">{game.price}</h1>
-                        <p className="line-through text-base-content/50">
-                          {game.originalPrice}
-                        </p>
-                      </div>
-                    )}
+                    <div className="flex flex-row items-center gap-2">
+                      <h1 className="font-bold">{game.price}</h1>
+                      <p className="line-through text-base-content/50">
+                        {game.originalPrice}
+                      </p>
+                    </div>
                   </div>
                 </Link>
               )
             )}
         </div>
       )}
-      <div className="flex flex-row items-center gap-2 self-end">
+      <div className="flex flex-row items-center gap-2 md:self-end">
         <button
-          className="btn px-8"
+          className="btn flex-1 px-8"
           onClick={() => {
             if (page == 1) return;
 
@@ -87,7 +97,7 @@ export default function Page() {
           <ArrowLeft />
         </button>
         <button
-          className="btn px-8"
+          className="btn flex-1 px-8"
           onClick={() => {
             setPage((prev) => prev + 1);
           }}
@@ -96,5 +106,13 @@ export default function Page() {
         </button>
       </div>
     </div>
+  );
+};
+
+export default function Page() {
+  return (
+    <Suspense>
+      <Component />
+    </Suspense>
   );
 }

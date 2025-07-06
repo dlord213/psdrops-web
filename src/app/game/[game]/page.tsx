@@ -178,14 +178,18 @@ export default async function Page({
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/game/${game}`)
   ).json();
 
+  if (!data) return;
+
   return (
     <div className="flex flex-col xl:grid xl:grid-cols-[0.5fr_1fr] 2xl:grid-cols-[0.4fr_1fr] gap-6 p-8 overflow-y-scroll min-h-screen bg-base-300 lg:min-h-[86vh] lg:max-h-[86vh] xl:min-h-[88vh] xl:max-h-[88vh] 2xl:min-h-[90vh] 2xl:max-h-[90vh] max-w-7xl mx-auto relative">
       <div className="flex flex-col md:flex-row xl:flex-col gap-8 xl:gap-4 px-2 xl:h-full xl:sticky xl:top-4 xl:overflow-y-auto">
         <div className="flex flex-col gap-4">
-          <img
-            src={data.game.image}
-            className="max-h-[30rem] rounded-3xl self-start object-contain"
-          />
+          {data.game.image && (
+            <img
+              src={data.game.image}
+              className="max-h-[30rem] rounded-3xl self-start object-contain"
+            />
+          )}
           <h1 className="font-bold text-4xl">{data.game.title}</h1>
         </div>
         <div className="flex flex-col gap-4">

@@ -1,9 +1,11 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Topbar() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
 
   return (
@@ -31,6 +33,11 @@ export default function Topbar() {
             </g>
           </svg>
           <input
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                router.push(`/search?query=${query}`);
+              }
+            }}
             type="search"
             className="grow"
             placeholder="Search"

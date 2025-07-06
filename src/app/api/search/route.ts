@@ -7,17 +7,11 @@ export const dynamic = "auto";
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const page = searchParams.get("page");
-  const sort = searchParams.get("sort");
-  const type = searchParams.get("type");
-  const genre = searchParams.get("genre");
+  const query = searchParams.get("query");
 
   try {
     const _URL = new URL(
-      `/ps-deals?${page ? `page=${page}` : "page=1"}${
-        sort ? `&sort=${sort}` : ""
-      }${type ? `&filter[type]=${type}` : ""}${
-        genre ? `&filter[genre]=${genre}` : ""
-      }`,
+      `/search?q=${query}${page ? `&page=${page}` : ""}`,
       "https://www.dekudeals.com"
     );
 
