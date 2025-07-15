@@ -32,6 +32,9 @@ export const _PAYLOAD = {
 const _SCRAPING_INSTANCE = axios.create({
   baseURL: "https://www.dekudeals.com",
   timeout: 10000,
+  headers: {
+    Referer: "https://www.dekudeals.com",
+  },
 });
 
 export async function initializeSession(returnTo: string = "/") {
